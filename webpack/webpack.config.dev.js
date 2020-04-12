@@ -17,7 +17,11 @@ module.exports = {
     publicPath: "/",
     filename: "bundle.js",
   },
+  node: {
+    net: "empty", // added because of stompjs issue where it can't resolve net
+  },
   devServer: {
+    open: true,
     stats: "minimal",
     overlay: true,
     historyApiFallback: true,

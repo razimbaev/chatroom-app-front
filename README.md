@@ -1,4 +1,4 @@
-# Simple Chatroom Apps
+# Simple Chatroom App
 
 For the end result this app should support the following:
 

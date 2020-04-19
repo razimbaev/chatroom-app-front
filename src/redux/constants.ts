@@ -1,0 +1,4 @@
+export const UPDATE_CHAT = "UPDATE_CHAT";
+export const SET_CHATROOM = "SET_CHATROOM";
+export const SET_CHATROOM_USERS = "SET_CHATROOM_USERS";
+export const SET_CHATROOMS = "SET_CHATROOMS";

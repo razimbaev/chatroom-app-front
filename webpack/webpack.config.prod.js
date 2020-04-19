@@ -19,6 +19,9 @@ module.exports = {
     publicPath: "/",
     filename: "bundle.js",
   },
+  node: {
+    net: "empty", // added because of stompjs issue where it can't resolve net
+  },
   plugins: [
     new webpackBundleAnalyzer.BundleAnalyzerPlugin({ analyzerMode: "static" }),
     new MiniCssExtractPlugin({ filename: "[name].[contenthash].css" }),

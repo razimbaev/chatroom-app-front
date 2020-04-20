@@ -23,9 +23,7 @@ const Chatroom = (props) => {
       <h1 className="chatroom-title">{chatroomName}</h1>
       <Row>
         <Col xs={10}>
-          <div>
-            <DisplayChat />
-          </div>
+          <DisplayChat />
           <SendMessage chatroomName={chatroomName} />
         </Col>
         <Col xs={2}>

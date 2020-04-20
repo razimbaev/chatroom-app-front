@@ -6,6 +6,11 @@
   margin-bottom: 2px;
 }
 
+.message-margins.row {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
 .header-bar {
   height: 5vh;
 }
@@ -28,4 +33,14 @@
   overflow-y: scroll;
   margin-bottom: 5px;
   border: 2px solid;
+  position: relative;
+}
+
+.most-recent-message-notification {
+  width: 100%;
+  background-color: PaleTurquoise;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  position: sticky;
+  bottom: 0px;
 }

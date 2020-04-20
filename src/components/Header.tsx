@@ -28,7 +28,7 @@ const Header = () => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" className="header-bar">
       <Navbar.Brand as={Link} to="/">
         MyChatRoom
       </Navbar.Brand>

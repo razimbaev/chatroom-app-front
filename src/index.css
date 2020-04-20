@@ -1,0 +1,31 @@
+.chat-message.badge {
+  padding: 15px;
+  border-radius: 30px;
+  font-size: 13px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.header-bar {
+  height: 5vh;
+}
+
+.header {
+  height: 5vh;
+}
+
+.chatroom {
+  padding-left: 10px;
+}
+
+.chatroom-title {
+  height: 4vh;
+  text-align: center;
+}
+
+.chatroom-messages {
+  height: 80vh;
+  overflow-y: scroll;
+  margin-bottom: 5px;
+  border: 2px solid;
+}

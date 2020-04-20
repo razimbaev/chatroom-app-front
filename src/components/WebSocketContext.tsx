@@ -107,7 +107,7 @@ const WebSocketProvider = ({ children }) => {
 
   if (!stompClient) {
     const host = "http://localhost:8080/websocket";
-    // "http://ec2-18-219-184-226.us-east-2.compute.amazonaws.com:8080/websocket"; // "http://localhost:8080/websocket"
+    // "http://ec2-3-21-166-131.us-east-2.compute.amazonaws.com:8080/websocket"; // "http://localhost:8080/websocket"
     const sock = new SockJS(host);
     stompClient = Stomp.over(sock);
     stompClient.reconnect_delay = 5000; // enable automatic reconnecting after 5 sec

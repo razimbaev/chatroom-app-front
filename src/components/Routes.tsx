@@ -7,7 +7,9 @@ import Header from "./Header";
 const Routes = () => {
   return (
     <BrowserRouter>
-      <Header />
+      <div className="header">
+        <Header />
+      </div>
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/chatroom/:chatroomName" component={Chatroom} />

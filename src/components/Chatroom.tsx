@@ -19,13 +19,13 @@ const Chatroom = (props) => {
   }, [chatroomName]);
 
   return (
-    <div>
-      <h1 style={{ textAlign: "center" }}>{chatroomName}</h1>
+    <div className="chatroom">
+      <h1 className="chatroom-title">{chatroomName}</h1>
       <Row>
         <Col xs={10}>
-          <DisplayChat />
-          <br />
-          <br />
+          <div>
+            <DisplayChat />
+          </div>
           <SendMessage chatroomName={chatroomName} />
         </Col>
         <Col xs={2}>

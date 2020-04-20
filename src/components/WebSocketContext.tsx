@@ -6,6 +6,7 @@ import {
   updateChat,
   setChatroomUsers,
   setChatrooms,
+  updateChatMessages,
 } from "../redux/actions/messageActions";
 
 const WebSocketContext = createContext(null);
@@ -71,9 +72,7 @@ const WebSocketProvider = ({ children }) => {
         "/app/chatroom/" + chatroomName + "/init",
         (message) => {
           const messageBody = JSON.parse(message.body);
-          messageBody.messages.forEach((message) => {
-            dispatch(updateChat(message.content, message.userId));
-          });
+          dispatch(updateChatMessages(messageBody));
           dispatch(setChatroomUsers(messageBody.usernames));
           init.unsubscribe();
           if (localStorage.getItem("userId")) {

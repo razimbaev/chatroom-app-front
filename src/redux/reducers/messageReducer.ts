@@ -1,5 +1,6 @@
 import {
   UPDATE_CHAT,
+  UPDATE_CHAT_MESSAGES,
   SET_CHATROOM,
   SET_CHATROOM_USERS,
   SET_CHATROOMS,
@@ -23,6 +24,13 @@ export const messageReducer = (
           ...state.chatroomMessages,
           { content: action.content, userId: action.userId },
         ],
+      };
+    case UPDATE_CHAT_MESSAGES:
+      return {
+        ...state,
+        chatroomMessages: state.chatroomMessages.concat(
+          action.messages.messages
+        ),
       };
     case SET_CHATROOM:
       if (state.chatroom === action.chatroom) return state;

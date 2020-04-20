@@ -14,6 +14,7 @@ const isVisible = (el) => {
 
 const DisplayChat = () => {
   const [showMostRecentFooter, setShowMostRecentFooter] = useState(false);
+  const [isInitScrolledToTop, setIsInitScrolledToTop] = useState(false);
   const chatWindow = useRef();
   const messages = useSelector((state) => state.chatroomMessages);
 
@@ -24,7 +25,7 @@ const DisplayChat = () => {
     (message) => (message.display = message.userId + ": " + message.content)
   );
 
-  const scrollToTop = () => {
+  const scrollToBottom = () => {
     const el = chatWindow.current;
     el.children[el.children.length - 2].scrollIntoView();
     setShowMostRecentFooter(false);
@@ -32,13 +33,19 @@ const DisplayChat = () => {
 
   useEffect(() => {
     const el = chatWindow.current;
+
+    if (!isInitScrolledToTop && messages && messages.length > 1) {
+      scrollToBottom();
+      setIsInitScrolledToTop(true);
+    }
+
     if (el && el.children.length > 1) {
       if (
         messages[messages.length - 1].isMine ||
         (el.children.length - 4 > 0 &&
           isVisible(el.children[el.children.length - 4]))
       ) {
-        scrollToTop();
+        scrollToBottom();
       } else {
         setShowMostRecentFooter(true);
       }
@@ -58,7 +65,7 @@ const DisplayChat = () => {
   ));
 
   const handleClickMostRecentMessageNotification = () => {
-    scrollToTop();
+    scrollToBottom();
   };
 
   const mostRecentMessageNotification = messages &&

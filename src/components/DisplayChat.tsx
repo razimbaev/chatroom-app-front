@@ -24,6 +24,12 @@ const DisplayChat = () => {
     (message) => (message.display = message.userId + ": " + message.content)
   );
 
+  const scrollToTop = () => {
+    const el = chatWindow.current;
+    el.children[el.children.length - 2].scrollIntoView();
+    setShowMostRecentFooter(false);
+  };
+
   useEffect(() => {
     const el = chatWindow.current;
     if (el && el.children.length > 1) {
@@ -32,8 +38,7 @@ const DisplayChat = () => {
         (el.children.length - 4 > 0 &&
           isVisible(el.children[el.children.length - 4]))
       ) {
-        setShowMostRecentFooter(false);
-        el.children[el.children.length - 2].scrollIntoView();
+        scrollToTop();
       } else {
         setShowMostRecentFooter(true);
       }
@@ -52,19 +57,26 @@ const DisplayChat = () => {
     </Row>
   ));
 
+  const handleClickMostRecentMessageNotification = () => {
+    scrollToTop();
+  };
+
   const mostRecentMessageNotification = messages &&
     messages.length > 2 &&
     !messages[messages.length - 1].isMine && (
-      <div
-        hidden={!showMostRecentFooter}
-        className="most-recent-message-notification"
-      >
-        <Row className="message-margins">
-          <Badge className="chat-message" variant="secondary">
-            {messages[messages.length - 1].display}
-          </Badge>
-        </Row>
-      </div>
+      <a>
+        <div
+          hidden={!showMostRecentFooter}
+          className="most-recent-message-notification"
+          onClick={handleClickMostRecentMessageNotification}
+        >
+          <Row className="message-margins">
+            <Badge className="chat-message" variant="secondary">
+              {messages[messages.length - 1].display}
+            </Badge>
+          </Row>
+        </div>
+      </a>
     );
 
   const handleScroll = () => {

@@ -22,12 +22,12 @@ const Chatroom = (props) => {
     <div className="chatroom">
       <h1 className="chatroom-title">{chatroomName}</h1>
       <Row>
+        <Col xs={2}>
+          <DisplayChatUsers />
+        </Col>
         <Col xs={10}>
           <DisplayChat />
           <SendMessage chatroomName={chatroomName} />
-        </Col>
-        <Col xs={2}>
-          <DisplayChatUsers />
         </Col>
       </Row>
     </div>

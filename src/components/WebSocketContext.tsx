@@ -7,6 +7,11 @@ import {
   setChatroomUsers,
   setChatrooms,
   updateChatMessages,
+  newUserJoin,
+  usernameChange,
+  userLeave,
+  setUsername,
+  updateUsernameInMessages,
 } from "../redux/actions/messageActions";
 
 const WebSocketContext = createContext(null);
@@ -31,12 +36,24 @@ const WebSocketProvider = ({ children }) => {
     );
   };
 
-  const updateUsername = (username) => {
+  const updateUsername = (username, onError) => {
     const updateUsernameSub = stompClient.subscribe(
       "/app/setUsername/" + username,
       (result) => {
-        // TODO - process whether username is taken or available
-        console.log(result);
+        const resultBody = JSON.parse(result.body);
+        if (resultBody.reasonChangeNotAllowed) {
+          onError(resultBody.reasonChangeNotAllowed);
+        } else {
+          dispatch(
+            setUsername(resultBody.newName, resultBody.timeNextChangeAllowed)
+          );
+          dispatch(
+            updateUsernameInMessages(
+              resultBody.previousName,
+              resultBody.newName
+            )
+          );
+        }
         updateUsernameSub.unsubscribe();
       }
     );
@@ -74,10 +91,13 @@ const WebSocketProvider = ({ children }) => {
           const messageBody = JSON.parse(message.body);
           dispatch(updateChatMessages(messageBody));
           dispatch(setChatroomUsers(messageBody.usernames));
+          dispatch(
+            setUsername(
+              messageBody.myUsername,
+              messageBody.nextUsernameChangeAllowed
+            )
+          );
           init.unsubscribe();
-          if (localStorage.getItem("userId")) {
-            updateUsername(localStorage.getItem("userId"));
-          }
         }
       );
 
@@ -85,7 +105,28 @@ const WebSocketProvider = ({ children }) => {
         "/topic/chatroom/" + chatroomName + "/users",
         (message) => {
           const messageBody = JSON.parse(message.body);
-          dispatch(setChatroomUsers(messageBody));
+          switch (messageBody.event) {
+            case "JOIN":
+              dispatch(newUserJoin(messageBody.currentName));
+              break;
+            case "LEAVE":
+              dispatch(userLeave(messageBody.currentName));
+              break;
+            case "CHANGE_USERNAME":
+              dispatch(
+                usernameChange(
+                  messageBody.previousName,
+                  messageBody.currentName
+                )
+              );
+              dispatch(
+                updateUsernameInMessages(
+                  messageBody.previousName,
+                  messageBody.currentName
+                )
+              );
+              break;
+          }
         }
       );
 

@@ -4,6 +4,11 @@ import {
   SET_CHATROOM,
   SET_CHATROOM_USERS,
   SET_CHATROOMS,
+  NEW_USER_JOIN,
+  USER_LEAVE,
+  USERNAME_CHANGE,
+  SET_USERNAME,
+  UPDATE_USERNAME_IN_MESSAGES,
 } from "../constants";
 
 export const messageReducer = (
@@ -12,6 +17,8 @@ export const messageReducer = (
     chatroom: "",
     chatrooms: [],
     users: [],
+    username: "",
+    nextTimeUserNameChangeAllowed: 0,
   },
   action
 ) => {
@@ -42,12 +49,59 @@ export const messageReducer = (
     case SET_CHATROOM_USERS:
       return {
         ...state,
-        users: action.users,
+        users: action.users.map((username) => {
+          return { oldName: "", currentName: username };
+        }),
       };
     case SET_CHATROOMS:
       return {
         ...state,
         chatrooms: action.chatrooms,
+      };
+    case NEW_USER_JOIN:
+      return {
+        ...state,
+        users: [...state.users, { oldName: "", currentName: action.username }],
+      };
+    case USER_LEAVE:
+      return {
+        ...state,
+        users: state.users.filter(
+          (user) => user.currentName !== action.username
+        ),
+      };
+    case USERNAME_CHANGE: {
+      const newUserList = [
+        { oldName: action.previousName, currentName: action.newName },
+      ];
+      let foundFirst = false;
+      const remainingUsers = state.users.filter((user) => {
+        if (foundFirst) return true;
+        if (user.currentName !== action.previousName) return true;
+        foundFirst = true;
+        return false;
+      });
+
+      newUserList.push(...remainingUsers);
+      return {
+        ...state,
+        users: newUserList,
+      };
+    }
+    case SET_USERNAME:
+      return {
+        ...state,
+        username: action.username,
+        nextTimeUserNameChangeAllowed: action.nextTimeChangeAllowed,
+      };
+    case UPDATE_USERNAME_IN_MESSAGES:
+      return {
+        ...state,
+        chatroomMessages: state.chatroomMessages.map((message) => {
+          return message.userId === action.previousName
+            ? { ...message, userId: action.newName }
+            : message;
+        }),
       };
     default:
       return state;

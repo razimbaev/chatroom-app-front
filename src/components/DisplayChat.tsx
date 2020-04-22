@@ -18,8 +18,9 @@ const DisplayChat = () => {
   const chatWindow = useRef();
   const messages = useSelector((state) => state.chatroomMessages);
 
-  const myId = localStorage.getItem("userId"); // TODO - remove later and use better solution
+  const myId = useSelector((state) => state.username);
 
+  // TODO - move this logic into reducer
   messages.forEach((message) => (message.isMine = message.userId === myId));
   messages.forEach(
     (message) => (message.display = message.userId + ": " + message.content)

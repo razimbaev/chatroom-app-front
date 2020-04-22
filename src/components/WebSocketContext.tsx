@@ -149,6 +149,7 @@ const WebSocketProvider = ({ children }) => {
     toUnsubscribeList.forEach((sub) => {
       sub.unsubscribe();
     });
+    toUnsubscribeList = [];
   };
 
   if (!stompClient) {

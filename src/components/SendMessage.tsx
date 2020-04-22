@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { WebSocketContext } from "./WebSocketContext";
 import { useSelector } from "react-redux";
 
-const SendMessage = ({ chatroomName }) => {
+const SendMessage = ({ chatroomName, handleOpenModal }) => {
   const userId = useSelector((state) => state.username);
 
   const [message, setMessage] = React.useState("");
@@ -15,8 +15,12 @@ const SendMessage = ({ chatroomName }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    websocket.sendMessage(chatroomName, message, userId);
-    setMessage("");
+    if (userId) {
+      websocket.sendMessage(chatroomName, message, userId);
+      setMessage("");
+    } else {
+      handleOpenModal();
+    }
   };
 
   const handleMessageChange = (event) => {
@@ -37,7 +41,7 @@ const SendMessage = ({ chatroomName }) => {
           value={message}
         />
         <InputGroup.Append>
-          <Button type="submit" variant="outline-secondary">
+          <Button type="submit" variant="outline-primary">
             Send
           </Button>
         </InputGroup.Append>

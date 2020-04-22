@@ -1,18 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Badge from "react-bootstrap/Badge";
 import { useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
-import ChangeUsernameModal from "./ChangeUsernameModal";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
-const DisplayChatUsers = () => {
+const DisplayChatUsers = ({ handleOpenModal }) => {
   // TODO - store in such a way that will enable users to change username and reflect change in other's UIs
-  const [showModal, setShowModal] = useState(false);
   const handleClick = () => {
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
+    handleOpenModal();
   };
 
   const users = useSelector((state) => state.users);
@@ -54,6 +50,31 @@ const DisplayChatUsers = () => {
     return Date.now() > nextTimeUserNameChangeAllowed;
   };
 
+  const changeUsernameButton = isUsernameChangeAllowed() ? (
+    <Button variant="outline-primary" onClick={handleClick}>
+      {username ? "Change Username" : "Set Username"}
+    </Button>
+  ) : (
+    <OverlayTrigger
+      overlay={
+        <Tooltip id="tooltip-disabled">
+          Username can only be changed once every 24 hours
+        </Tooltip>
+      }
+    >
+      <span className="d-inline-block">
+        <Button
+          variant="outline-primary"
+          onClick={handleClick}
+          disabled={true}
+          style={{ pointerEvents: "none" }}
+        >
+          {username ? "Change Username" : "Set Username"}
+        </Button>
+      </span>
+    </OverlayTrigger>
+  );
+
   return (
     <div>
       <div className="chatroom-user-window">
@@ -68,16 +89,7 @@ const DisplayChatUsers = () => {
         </div>
         {numEmptyUsernames > 0 && emptyUsernameBadge}
       </div>
-      <div className="text-align-center">
-        <Button
-          variant="outline-primary"
-          onClick={handleClick}
-          disabled={!isUsernameChangeAllowed()}
-        >
-          {username ? "Change Username" : "Set Username"}
-        </Button>
-      </div>
-      <ChangeUsernameModal show={showModal} handleClose={handleCloseModal} />
+      <div className="text-align-center">{changeUsernameButton}</div>
     </div>
   );
 };

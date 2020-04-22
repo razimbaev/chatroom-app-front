@@ -48,7 +48,7 @@ const DisplayChat = () => {
       ) {
         scrollToBottom();
       } else {
-        setShowMostRecentFooter(true);
+        if (messages.length > 4) setShowMostRecentFooter(true);
       }
     }
   }, [messages]);

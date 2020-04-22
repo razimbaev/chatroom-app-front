@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import DisplayChat from "./DisplayChat";
 import SendMessage from "./SendMessage";
 import Row from "react-bootstrap/Row";
@@ -7,6 +7,7 @@ import DisplayChatUsers from "./DisplayChatUsers";
 import { WebSocketContext } from "./WebSocketContext";
 import { useDispatch } from "react-redux";
 import { setChatroom } from "../redux/actions/messageActions";
+import ChangeUsernameModal from "./ChangeUsernameModal";
 
 const Chatroom = (props) => {
   const chatroomName = props.match.params.chatroomName;
@@ -18,18 +19,31 @@ const Chatroom = (props) => {
     websocket.subscribeChatroom(chatroomName);
   }, [chatroomName]);
 
+  const [showModal, setShowModal] = useState(false);
+  const handleOpenModal = () => {
+    setShowModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
     <div className="chatroom">
       <h1 className="chatroom-title">{chatroomName}</h1>
       <Row>
         <Col xs={2}>
-          <DisplayChatUsers />
+          <DisplayChatUsers handleOpenModal={handleOpenModal} />
         </Col>
         <Col xs={10}>
           <DisplayChat />
-          <SendMessage chatroomName={chatroomName} />
+          <SendMessage
+            chatroomName={chatroomName}
+            handleOpenModal={handleOpenModal}
+          />
         </Col>
       </Row>
+      <ChangeUsernameModal show={showModal} handleClose={handleCloseModal} />
     </div>
   );
 };

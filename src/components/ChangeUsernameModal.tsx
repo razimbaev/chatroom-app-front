@@ -51,10 +51,20 @@ const ChangeUsernameModal = (props) => {
 
   const className = validated ? "" : "invalid-textbox";
 
+  const setUsernameBeforeSendMessageWarning = (
+    <div className="text-align-center">
+      <Form.Text className="error-message">
+        You must specify username before you can send message in chatroom
+      </Form.Text>
+      <br />
+    </div>
+  );
+
   return (
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
+          {currentUsername || setUsernameBeforeSendMessageWarning}
           <Form.Group controlId="formUsername">
             <Form.Control
               type="text"

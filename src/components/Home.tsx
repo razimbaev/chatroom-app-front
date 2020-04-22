@@ -1,31 +1,75 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 import { WebSocketContext } from "./WebSocketContext";
 import { useSelector } from "react-redux";
+import Card from "react-bootstrap/Card";
 
 const Home = () => {
-  // TODO - display how many users in a room
   const websocket = React.useContext(WebSocketContext);
-  websocket.loadChatroomList();
-  const chatrooms = useSelector((state) => state.chatrooms);
+  let unsubscribe;
 
-  const chatroomCards = chatrooms.map((chatroom) => {
-    return (
-      <Link to={"chatroom/" + chatroom} key={chatroom}>
-        <div className="card" style={{ width: "18rem" }}>
-          <div className="card-body">
-            <h5 className="card-title">{chatroom}</h5>
-            <h6 className="card-subtitle mb-2 text-muted">
-              Put 5 most recent messages here (maybe add 3 second pause between
-              updating)
-            </h6>
-          </div>
-        </div>
-      </Link>
+  useEffect(() => {
+    unsubscribe = websocket.loadHomepageData();
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
+  }, []);
+
+  const homepageData = useSelector((state) => state.homepageData);
+
+  const chatroomCards = [];
+
+  for (const chatroom of Object.keys(homepageData)) {
+    const numUsers = homepageData[chatroom].numUsers;
+    const mostRecentMessages = homepageData[chatroom].mostRecentMessages;
+
+    chatroomCards.push(
+      <div key={chatroom}>
+        <br />
+        <Link to={"chatroom/" + chatroom}>
+          <Card border="dark">
+            <Card.Header style={{ paddingBottom: "0px" }}>
+              <p style={{ float: "left", color: "black" }}>{chatroom}</p>
+              <p style={{ float: "right", color: "darkblue" }}>
+                {numUsers} active users
+              </p>
+            </Card.Header>
+            <Card.Body
+              style={{
+                marginBottom: "0px",
+                marginTop: "0px",
+                paddingBottom: "5px",
+                paddingTop: "5px",
+              }}
+            >
+              {mostRecentMessages.map((messageInfo, index) => {
+                return (
+                  <Card.Text
+                    key={index}
+                    style={{
+                      color: "gray",
+                      marginBottom: "0px",
+                      marginTop: "0px",
+                      paddingBottom: "0px",
+                      paddingTop: "0px",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                  >
+                    {messageInfo.userId} : {messageInfo.content}
+                  </Card.Text>
+                );
+              })}
+            </Card.Body>
+          </Card>
+        </Link>
+      </div>
     );
-  });
+  }
 
   return (
     <Row>

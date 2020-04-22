@@ -3,12 +3,14 @@ import {
   UPDATE_CHAT_MESSAGES,
   SET_CHATROOM,
   SET_CHATROOM_USERS,
-  SET_CHATROOMS,
+  SET_HOMEPAGE_DATA,
   NEW_USER_JOIN,
   USER_LEAVE,
   USERNAME_CHANGE,
   SET_USERNAME,
   UPDATE_USERNAME_IN_MESSAGES,
+  UPDATE_HOMEPAGE_USER,
+  UPDATE_HOMEPAGE_MESSAGE,
 } from "../constants";
 
 export const updateChat = (content: string, userId: string) => {
@@ -27,8 +29,16 @@ export const setChatroomUsers = (users: string[]) => {
   return { type: SET_CHATROOM_USERS, users };
 };
 
-export const setChatrooms = (chatrooms: string[]) => {
-  return { type: SET_CHATROOMS, chatrooms };
+export const setHomepageData = (homepageData) => {
+  return { type: SET_HOMEPAGE_DATA, homepageData };
+};
+
+export const updateHomepageMessage = (message) => {
+  return { type: UPDATE_HOMEPAGE_MESSAGE, message };
+};
+
+export const updateHomepageUser = (chatroom: string, numUsers: number) => {
+  return { type: UPDATE_HOMEPAGE_USER, chatroom, numUsers };
 };
 
 export const newUserJoin = (username: string) => {

@@ -5,13 +5,15 @@ import { useDispatch } from "react-redux";
 import {
   updateChat,
   setChatroomUsers,
-  setChatrooms,
+  setHomepageData,
   updateChatMessages,
   newUserJoin,
   usernameChange,
   userLeave,
   setUsername,
   updateUsernameInMessages,
+  updateHomepageUser,
+  updateHomepageMessage,
 } from "../redux/actions/messageActions";
 
 const WebSocketContext = createContext(null);
@@ -24,6 +26,7 @@ const WebSocketProvider = ({ children }) => {
   let ws;
   let toSubscribeList = [];
   let toUnsubscribeList = [];
+  let homepageSub = [];
 
   const dispatch = useDispatch();
 
@@ -59,26 +62,55 @@ const WebSocketProvider = ({ children }) => {
     );
   };
 
-  const loadChatroomList = () => {
+  const loadHomepageData = () => {
     if (!stompClient || !stompClient.connected) {
       toSubscribeList.push(() => {
-        loadChatroomList();
+        loadHomepageData();
       });
     } else {
+      unsubscribeHome();
+
       const getAllChatroomsSub = stompClient.subscribe(
-        "/app/chatrooms",
+        "/app/home/init",
         (result) => {
           const body = JSON.parse(result.body);
-          dispatch(setChatrooms(body));
+          dispatch(setHomepageData(body));
           getAllChatroomsSub.unsubscribe();
         }
       );
+
+      const updateHomeMessageSub = stompClient.subscribe(
+        "/topic/home/message",
+        (result) => {
+          const messageBody = JSON.parse(result.body);
+          dispatch(updateHomepageMessage(messageBody));
+        }
+      );
+
+      const updateHomeUserSub = stompClient.subscribe(
+        "/topic/home/user",
+        (result) => {
+          const messageBody = JSON.parse(result.body);
+          dispatch(
+            updateHomepageUser(messageBody.chatroom, messageBody.numUsers)
+          );
+        }
+      );
+
+      homepageSub = [updateHomeMessageSub, updateHomeUserSub];
     }
+
+    return unsubscribeHome;
+  };
+
+  const unsubscribeHome = () => {
+    homepageSub.forEach((sub) => {
+      sub.unsubscribe();
+    });
+    homepageSub = [];
   };
 
   const subscribeChatroom = (chatroomName) => {
-    // TODO - might need to validate chatroomName
-    // TODO - use subscription
     if (!stompClient || !stompClient.connected) {
       toSubscribeList.push(() => {
         subscribeChatroom(chatroomName);
@@ -171,7 +203,7 @@ const WebSocketProvider = ({ children }) => {
       sendMessage,
       updateUsername,
       subscribeChatroom,
-      loadChatroomList,
+      loadHomepageData,
     };
   }
 

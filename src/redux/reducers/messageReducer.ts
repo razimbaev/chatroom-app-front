@@ -3,19 +3,21 @@ import {
   UPDATE_CHAT_MESSAGES,
   SET_CHATROOM,
   SET_CHATROOM_USERS,
-  SET_CHATROOMS,
+  SET_HOMEPAGE_DATA,
   NEW_USER_JOIN,
   USER_LEAVE,
   USERNAME_CHANGE,
   SET_USERNAME,
   UPDATE_USERNAME_IN_MESSAGES,
+  UPDATE_HOMEPAGE_MESSAGE,
+  UPDATE_HOMEPAGE_USER,
 } from "../constants";
 
 export const messageReducer = (
   state = {
     chatroomMessages: [],
     chatroom: "",
-    chatrooms: [],
+    homepageData: {},
     users: [],
     username: "",
     nextTimeUserNameChangeAllowed: 0,
@@ -40,7 +42,6 @@ export const messageReducer = (
         ),
       };
     case SET_CHATROOM:
-      if (state.chatroom === action.chatroom) return state;
       return {
         ...state,
         chatroomMessages: [],
@@ -53,10 +54,51 @@ export const messageReducer = (
           return { oldName: "", currentName: username };
         }),
       };
-    case SET_CHATROOMS:
+    case SET_HOMEPAGE_DATA: {
+      const homepageData = {};
+      action.homepageData.map((chatroom) => {
+        homepageData[chatroom.chatroom] = {
+          numUsers: chatroom.numUsers,
+          mostRecentMessages: chatroom.mostRecentMessages,
+        };
+      });
+
       return {
         ...state,
-        chatrooms: action.chatrooms,
+        homepageData,
+      };
+    }
+    case UPDATE_HOMEPAGE_MESSAGE: {
+      let newMessages;
+      const prevMessages =
+        state.homepageData[action.message.chatroom].mostRecentMessages;
+      if (prevMessages.length < 3) {
+        newMessages = [...prevMessages, action.message];
+      } else {
+        newMessages = prevMessages.slice(1, 3);
+        newMessages.push(action.message);
+      }
+      return {
+        ...state,
+        homepageData: {
+          ...state.homepageData,
+          [action.message.chatroom]: {
+            ...state.homepageData[action.message.chatroom],
+            mostRecentMessages: newMessages,
+          },
+        },
+      };
+    }
+    case UPDATE_HOMEPAGE_USER:
+      return {
+        ...state,
+        homepageData: {
+          ...state.homepageData,
+          [action.chatroom]: {
+            ...state.homepageData[action.chatroom],
+            numUsers: action.numUsers,
+          },
+        },
       };
     case NEW_USER_JOIN:
       return {

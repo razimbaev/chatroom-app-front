@@ -138,11 +138,17 @@ const WebSocketProvider = ({ children }) => {
         }
       );
 
-      toUnsubscribeList.forEach((sub) => {
-        sub.unsubscribe();
-      });
+      unsubscribeExistingChatroom();
       toUnsubscribeList = [messageSub, userSub];
     }
+
+    return unsubscribeExistingChatroom;
+  };
+
+  const unsubscribeExistingChatroom = () => {
+    toUnsubscribeList.forEach((sub) => {
+      sub.unsubscribe();
+    });
   };
 
   if (!stompClient) {

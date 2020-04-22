@@ -14,9 +14,14 @@ const Chatroom = (props) => {
   const dipatch = useDispatch();
   dipatch(setChatroom(chatroomName));
   const websocket = React.useContext(WebSocketContext);
+  let unsubscribe;
 
   useEffect(() => {
-    websocket.subscribeChatroom(chatroomName);
+    unsubscribe = websocket.subscribeChatroom(chatroomName);
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, [chatroomName]);
 
   const [showModal, setShowModal] = useState(false);

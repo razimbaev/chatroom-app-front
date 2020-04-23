@@ -50,13 +50,32 @@ const Home = () => {
     );
   }
 
-  return (
-    <Row>
-      <Col xs={4}></Col>
-      <Col xs={4}>{chatroomCards}</Col>
-      <Col xs={4}></Col>
-    </Row>
-  );
+  const halfLength = Math.ceil(chatroomCards.length / 2);
+  const right = chatroomCards;
+  const left = chatroomCards.splice(0, halfLength);
+
+  const rows = left.map((leftCard, index) => {
+    return (
+      <Row key={index}>
+        <Col xs={6}>
+          <Row>
+            <Col xs={3}></Col>
+            <Col xs={8}>{leftCard}</Col>
+            <Col xs={1} />
+          </Row>
+        </Col>
+        <Col xs={6}>
+          <Row>
+            <Col xs={1} />
+            <Col xs={8}>{index < right.length ? right[index] : null}</Col>
+            <Col xs={3} />
+          </Row>
+        </Col>
+      </Row>
+    );
+  });
+
+  return <div>{rows}</div>;
 };
 
 export default Home;

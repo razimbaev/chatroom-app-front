@@ -25,9 +25,6 @@ const Header = () => {
       </Nav>
       <Nav className="ml-auto">
         <Nav.Link as={Link} to="/">
-          Random Chatroom
-        </Nav.Link>
-        <Nav.Link as={Link} to="/">
           My Chats
         </Nav.Link>
       </Nav>

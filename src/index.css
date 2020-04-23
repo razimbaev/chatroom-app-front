@@ -120,7 +120,13 @@
   background-color: rgb(189, 218, 231);
 }
 
-.create-chatroom-button-align {
+.create-chatroom-button-align-left {
+  flex-direction: row;
+  display: flex;
+  margin-top: 5px;
+}
+
+.create-chatroom-button-align-right {
   flex-direction: row-reverse;
   display: flex;
   margin-top: 5px;

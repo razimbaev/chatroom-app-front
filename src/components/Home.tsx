@@ -7,8 +7,15 @@ import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card";
 import CreateNewChatroomModal from "./CreateNewChatroomModal";
 import Button from "react-bootstrap/Button";
+import { Redirect } from "react-router-dom";
 
 const Home = () => {
+  const [redirect, setRedirect] = useState("");
+
+  useEffect(() => {
+    setRedirect("");
+  }, []);
+
   const websocket = React.useContext(WebSocketContext);
   let unsubscribe;
 
@@ -85,19 +92,42 @@ const Home = () => {
     setShowModal(false);
   };
 
+  const getRandomChatroom = () => {
+    const chatroomsToJoin = Object.keys(homepageData);
+    const randomIndex = Math.floor(Math.random() * chatroomsToJoin.length);
+    return chatroomsToJoin[randomIndex];
+  };
+
+  const joinRandomChatroom = () => {
+    const randomChatroom = getRandomChatroom();
+    setRedirect(randomChatroom);
+  };
+
+  if (redirect) {
+    return <Redirect to={"/chatroom/" + redirect} />;
+  }
+
   const createNewChatroomButton = (
     <Row>
       <Col xs={6}>
         <Row>
           <Col xs={3}></Col>
-          <Col xs={8}></Col>
+          <Col xs={8} className="create-chatroom-button-align-left">
+            <Button
+              variant="outline-light"
+              className="create-chatroom"
+              onClick={joinRandomChatroom}
+            >
+              Join Random
+            </Button>
+          </Col>
           <Col xs={1} />
         </Row>
       </Col>
       <Col xs={6}>
         <Row>
           <Col xs={1} />
-          <Col xs={8} className="create-chatroom-button-align">
+          <Col xs={8} className="create-chatroom-button-align-right">
             <Button
               variant="outline-light"
               className="create-chatroom"

@@ -30,7 +30,7 @@ const Home = () => {
       <div key={chatroom}>
         <br />
         <Link to={"chatroom/" + chatroom}>
-          <Card border="dark">
+          <Card border="dark" className="home-card">
             <Card.Header className="home-card-header">
               <p className="home-chatroom-name">{chatroom}</p>
               <p className="home-active-users">{numUsers} active users</p>

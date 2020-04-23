@@ -111,3 +111,11 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.home-card:hover {
+  border-color: #007bff !important;
+}
+
+.home-card:hover .home-card-header {
+  background-color: rgb(189, 218, 231);
+}

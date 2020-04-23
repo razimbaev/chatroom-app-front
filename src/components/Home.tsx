@@ -1,10 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { Link } from "react-router-dom";
 import { WebSocketContext } from "./WebSocketContext";
 import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card";
+import CreateNewChatroomModal from "./CreateNewChatroomModal";
+import Button from "react-bootstrap/Button";
 
 const Home = () => {
   const websocket = React.useContext(WebSocketContext);
@@ -75,7 +77,48 @@ const Home = () => {
     );
   });
 
-  return <div>{rows}</div>;
+  const [showModal, setShowModal] = useState(false);
+  const openModal = () => {
+    setShowModal(true);
+  };
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  const createNewChatroomButton = (
+    <Row>
+      <Col xs={6}>
+        <Row>
+          <Col xs={3}></Col>
+          <Col xs={8}></Col>
+          <Col xs={1} />
+        </Row>
+      </Col>
+      <Col xs={6}>
+        <Row>
+          <Col xs={1} />
+          <Col xs={8} className="create-chatroom-button-align">
+            <Button
+              variant="outline-light"
+              className="create-chatroom"
+              onClick={openModal}
+            >
+              + Create New Chatroom
+            </Button>
+          </Col>
+          <Col xs={3} />
+        </Row>
+      </Col>
+    </Row>
+  );
+
+  return (
+    <div>
+      {createNewChatroomButton}
+      {rows}
+      <CreateNewChatroomModal show={showModal} handleClose={closeModal} />
+    </div>
+  );
 };
 
 export default Home;

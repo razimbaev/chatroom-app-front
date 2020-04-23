@@ -30,8 +30,22 @@ const WebSocketProvider = ({ children }) => {
 
   const dispatch = useDispatch();
 
+  const createNewChatroom = (chatroomName, onError, onSuccess) => {
+    const createNewChatroomSub = stompClient.subscribe(
+      "/app/chatroom/create/" + chatroomName,
+      (result) => {
+        const resultBody = JSON.parse(result.body);
+        if (resultBody.reasonChangeNotAllowed) {
+          onError(resultBody.reasonChangeNotAllowed);
+        } else {
+          onSuccess();
+        }
+        createNewChatroomSub.unsubscribe();
+      }
+    );
+  };
+
   const sendMessage = (chatroomName, content, userId) => {
-    console.log(stompClient);
     stompClient.send(
       "/app/sendMessage/" + chatroomName,
       {},
@@ -204,6 +218,7 @@ const WebSocketProvider = ({ children }) => {
       updateUsername,
       subscribeChatroom,
       loadHomepageData,
+      createNewChatroom,
     };
   }
 

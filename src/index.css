@@ -119,3 +119,19 @@
 .home-card:hover .home-card-header {
   background-color: rgb(189, 218, 231);
 }
+
+.create-chatroom-button-align {
+  flex-direction: row-reverse;
+  display: flex;
+  margin-top: 5px;
+}
+
+.create-chatroom.btn {
+  color: black;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.create-chatroom.btn:hover {
+  border-color: #007bff;
+  background-color: rgb(189, 218, 231);
+}

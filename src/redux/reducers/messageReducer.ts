@@ -11,6 +11,7 @@ import {
   UPDATE_USERNAME_IN_MESSAGES,
   UPDATE_HOMEPAGE_MESSAGE,
   UPDATE_HOMEPAGE_USER,
+  UPDATE_HOMEPAGE_CHATROOMS,
 } from "../constants";
 
 export const messageReducer = (
@@ -97,6 +98,17 @@ export const messageReducer = (
           [action.chatroom]: {
             ...state.homepageData[action.chatroom],
             numUsers: action.numUsers,
+          },
+        },
+      };
+    case UPDATE_HOMEPAGE_CHATROOMS:
+      return {
+        ...state,
+        homepageData: {
+          ...state.homepageData,
+          [action.chatroom]: {
+            numUsers: action.numUsers,
+            mostRecentMessages: action.mostRecentMessages,
           },
         },
       };

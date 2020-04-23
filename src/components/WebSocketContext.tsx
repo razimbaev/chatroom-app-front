@@ -14,6 +14,7 @@ import {
   updateUsernameInMessages,
   updateHomepageUser,
   updateHomepageMessage,
+  updateHomepageChatrooms,
 } from "../redux/actions/messageActions";
 
 const WebSocketContext = createContext(null);
@@ -111,7 +112,25 @@ const WebSocketProvider = ({ children }) => {
         }
       );
 
-      homepageSub = [updateHomeMessageSub, updateHomeUserSub];
+      const updateHomeChatroomsSub = stompClient.subscribe(
+        "/topic/home/chatroom",
+        (result) => {
+          const messageBody = JSON.parse(result.body);
+          dispatch(
+            updateHomepageChatrooms(
+              messageBody.chatroom,
+              messageBody.numUsers,
+              messageBody.mostRecentMessages
+            )
+          );
+        }
+      );
+
+      homepageSub = [
+        updateHomeMessageSub,
+        updateHomeUserSub,
+        updateHomeChatroomsSub,
+      ];
     }
 
     return unsubscribeHome;

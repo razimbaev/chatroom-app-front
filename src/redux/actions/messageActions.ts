@@ -11,6 +11,7 @@ import {
   UPDATE_USERNAME_IN_MESSAGES,
   UPDATE_HOMEPAGE_USER,
   UPDATE_HOMEPAGE_MESSAGE,
+  UPDATE_HOMEPAGE_CHATROOMS,
 } from "../constants";
 
 export const updateChat = (content: string, userId: string) => {
@@ -39,6 +40,19 @@ export const updateHomepageMessage = (message) => {
 
 export const updateHomepageUser = (chatroom: string, numUsers: number) => {
   return { type: UPDATE_HOMEPAGE_USER, chatroom, numUsers };
+};
+
+export const updateHomepageChatrooms = (
+  chatroom: string,
+  numUsers: number,
+  mostRecentMessages
+) => {
+  return {
+    type: UPDATE_HOMEPAGE_CHATROOMS,
+    chatroom,
+    numUsers,
+    mostRecentMessages,
+  };
 };
 
 export const newUserJoin = (username: string) => {

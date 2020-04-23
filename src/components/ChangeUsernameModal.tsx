@@ -64,7 +64,7 @@ const ChangeUsernameModal = (props) => {
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Body>
         <Form onSubmit={handleSubmit}>
-          {currentUsername || setUsernameBeforeSendMessageWarning}
+          {currentUsername ? "" : setUsernameBeforeSendMessageWarning}
           <Form.Group controlId="formUsername">
             <Form.Control
               type="text"

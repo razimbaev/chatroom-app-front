@@ -31,35 +31,14 @@ const Home = () => {
         <br />
         <Link to={"chatroom/" + chatroom}>
           <Card border="dark">
-            <Card.Header style={{ paddingBottom: "0px" }}>
-              <p style={{ float: "left", color: "black" }}>{chatroom}</p>
-              <p style={{ float: "right", color: "darkblue" }}>
-                {numUsers} active users
-              </p>
+            <Card.Header className="home-card-header">
+              <p className="home-chatroom-name">{chatroom}</p>
+              <p className="home-active-users">{numUsers} active users</p>
             </Card.Header>
-            <Card.Body
-              style={{
-                marginBottom: "0px",
-                marginTop: "0px",
-                paddingBottom: "5px",
-                paddingTop: "5px",
-              }}
-            >
+            <Card.Body className="home-card-body">
               {mostRecentMessages.map((messageInfo, index) => {
                 return (
-                  <Card.Text
-                    key={index}
-                    style={{
-                      color: "gray",
-                      marginBottom: "0px",
-                      marginTop: "0px",
-                      paddingBottom: "0px",
-                      paddingTop: "0px",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  >
+                  <Card.Text key={index} className="home-card-body-content">
                     {messageInfo.userId} : {messageInfo.content}
                   </Card.Text>
                 );

@@ -12,6 +12,7 @@ import {
   UPDATE_HOMEPAGE_USER,
   UPDATE_HOMEPAGE_MESSAGE,
   UPDATE_HOMEPAGE_CHATROOMS,
+  SET_MY_CHATROOMS,
 } from "../constants";
 
 export const updateChat = (content: string, userId: string) => {
@@ -79,4 +80,8 @@ export const updateUsernameInMessages = (
   newName: string
 ) => {
   return { type: UPDATE_USERNAME_IN_MESSAGES, previousName, newName };
+};
+
+export const setMyChatrooms = (myChatrooms: string[]) => {
+  return { type: SET_MY_CHATROOMS, myChatrooms };
 };

@@ -24,7 +24,7 @@ const Header = () => {
         </Form>
       </Nav>
       <Nav className="ml-auto">
-        <Nav.Link as={Link} to="/">
+        <Nav.Link as={Link} to="/mychats">
           My Chats
         </Nav.Link>
       </Nav>

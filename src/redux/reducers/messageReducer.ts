@@ -12,6 +12,7 @@ import {
   UPDATE_HOMEPAGE_MESSAGE,
   UPDATE_HOMEPAGE_USER,
   UPDATE_HOMEPAGE_CHATROOMS,
+  SET_MY_CHATROOMS,
 } from "../constants";
 
 export const messageReducer = (
@@ -22,6 +23,7 @@ export const messageReducer = (
     users: [],
     username: "",
     nextTimeUserNameChangeAllowed: 0,
+    myChatrooms: [],
   },
   action
 ) => {
@@ -156,6 +158,11 @@ export const messageReducer = (
             ? { ...message, userId: action.newName }
             : message;
         }),
+      };
+    case SET_MY_CHATROOMS:
+      return {
+        ...state,
+        myChatrooms: action.myChatrooms.reverse(),
       };
     default:
       return state;

@@ -15,6 +15,7 @@ import {
   updateHomepageUser,
   updateHomepageMessage,
   updateHomepageChatrooms,
+  setMyChatrooms,
 } from "../redux/actions/messageActions";
 
 const WebSocketContext = createContext(null);
@@ -44,6 +45,23 @@ const WebSocketProvider = ({ children }) => {
         createNewChatroomSub.unsubscribe();
       }
     );
+  };
+
+  const getMyChats = () => {
+    if (!stompClient || !stompClient.connected) {
+      toSubscribeList.push(() => {
+        getMyChats();
+      });
+    } else {
+      const getMyChatsSub = stompClient.subscribe(
+        "/app/mychatrooms",
+        (result) => {
+          const resultBody = JSON.parse(result.body);
+          dispatch(setMyChatrooms(resultBody));
+          getMyChatsSub.unsubscribe();
+        }
+      );
+    }
   };
 
   const sendMessage = (chatroomName, content, userId) => {
@@ -238,6 +256,7 @@ const WebSocketProvider = ({ children }) => {
       subscribeChatroom,
       loadHomepageData,
       createNewChatroom,
+      getMyChats,
     };
   }
 

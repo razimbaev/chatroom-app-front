@@ -51,7 +51,11 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
   };
 
   const changeUsernameButton = isUsernameChangeAllowed() ? (
-    <Button variant="outline-primary" onClick={handleClick}>
+    <Button
+      variant="outline-light"
+      className="create-chatroom"
+      onClick={handleClick}
+    >
       {username ? "Change Username" : "Set Username"}
     </Button>
   ) : (
@@ -64,7 +68,8 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
     >
       <span className="d-inline-block">
         <Button
-          variant="outline-primary"
+          variant="outline-light"
+          className="create-chatroom"
           onClick={handleClick}
           disabled={true}
           style={{ pointerEvents: "none" }}

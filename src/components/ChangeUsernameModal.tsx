@@ -85,9 +85,16 @@ const ChangeUsernameModal = (props) => {
             <span className="error-message">{errorMessage}</span>
           </div>
           <br />
-          <Button variant="outline-primary" type="submit" disabled={!validated}>
-            Submit
-          </Button>
+          <div className="change-username-modal-button-alignment">
+            <Button
+              variant="outline-light"
+              className="create-chatroom"
+              type="submit"
+              disabled={!validated}
+            >
+              Submit
+            </Button>
+          </div>
         </Form>
       </Modal.Body>
     </Modal>

@@ -47,6 +47,23 @@ const WebSocketProvider = ({ children }) => {
     );
   };
 
+  const getChatroomSuggestions = (onSuccess) => {
+    if (!stompClient || !stompClient.connected) {
+      toSubscribeList.push(() => {
+        getChatroomSuggestions(onSuccess);
+      });
+    } else {
+      const getChatroomSuggestionsSub = stompClient.subscribe(
+        "/app/chatroomSuggestions",
+        (result) => {
+          const resultBody = JSON.parse(result.body);
+          onSuccess(resultBody);
+          getChatroomSuggestionsSub.unsubscribe();
+        }
+      );
+    }
+  };
+
   const getMyChats = () => {
     if (!stompClient || !stompClient.connected) {
       toSubscribeList.push(() => {
@@ -257,6 +274,7 @@ const WebSocketProvider = ({ children }) => {
       loadHomepageData,
       createNewChatroom,
       getMyChats,
+      getChatroomSuggestions,
     };
   }
 

@@ -45,6 +45,7 @@ export const messageReducer = (
         ),
       };
     case SET_CHATROOM:
+      if (action.chatroom == state.chatroom) return state;
       return {
         ...state,
         chatroomMessages: [],

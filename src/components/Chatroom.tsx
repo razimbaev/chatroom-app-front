@@ -12,11 +12,11 @@ import ChangeUsernameModal from "./ChangeUsernameModal";
 const Chatroom = (props) => {
   const chatroomName = props.match.params.chatroomName;
   const dipatch = useDispatch();
-  dipatch(setChatroom(chatroomName));
   const websocket = React.useContext(WebSocketContext);
   let unsubscribe;
 
   useEffect(() => {
+    dipatch(setChatroom(chatroomName));
     unsubscribe = websocket.subscribeChatroom(chatroomName);
 
     return () => {

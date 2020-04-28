@@ -46,8 +46,10 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
   );
 
   const isUsernameChangeAllowed = () => {
-    if (nextTimeUserNameChangeAllowed == 0) return true;
-    return Date.now() > nextTimeUserNameChangeAllowed;
+    // TODO - uncomment below if need to prevent usernames from being changed more than once a day
+    return true;
+    // if (nextTimeUserNameChangeAllowed == 0) return true;
+    // return Date.now() > nextTimeUserNameChangeAllowed;
   };
 
   const changeUsernameButton = isUsernameChangeAllowed() ? (

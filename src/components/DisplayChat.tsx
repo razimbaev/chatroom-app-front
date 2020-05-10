@@ -4,6 +4,7 @@ import Row from "react-bootstrap/Row";
 import { useSelector } from "react-redux";
 
 const isVisible = (el) => {
+  if (!el) return false;
   const rect = el.getBoundingClientRect();
   const elemTop = rect.top;
   const elemBottom = rect.bottom;
@@ -34,6 +35,10 @@ const DisplayChat = () => {
 
   useEffect(() => {
     const el = chatWindow.current;
+
+    if (!messages || messages.length === 0) {
+      setIsInitScrolledToTop(false);
+    }
 
     if (!isInitScrolledToTop && messages && messages.length > 1) {
       scrollToBottom();

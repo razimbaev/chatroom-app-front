@@ -13,9 +13,10 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
 
   const users = useSelector((state) => state.users);
   const username = useSelector((state) => state.username);
-  const nextTimeUserNameChangeAllowed = useSelector(
-    (state) => state.nextTimeUserNameChangeAllowed
-  );
+  // TODO - uncomment below if need to prevent usernames from being changed more than once a day
+  // const nextTimeUserNameChangeAllowed = useSelector(
+  //   (state) => state.nextTimeUserNameChangeAllowed
+  // );
 
   let numEmptyUsernames = 0;
   const userBadges = users.map((user) => {

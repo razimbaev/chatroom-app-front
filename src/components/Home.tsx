@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { WebSocketContext } from "./WebSocketContext";
 import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card";
 import CreateNewChatroomModal from "./CreateNewChatroomModal";
 import Button from "react-bootstrap/Button";
-import { Redirect } from "react-router-dom";
 
 const Home = () => {
   const [redirect, setRedirect] = useState("");

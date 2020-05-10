@@ -7,9 +7,6 @@ import {
   setChatroomUsers,
   setHomepageData,
   updateChatMessages,
-  newUserJoin,
-  usernameChange,
-  userLeave,
   setUsername,
   updateUsernameInMessages,
   updateHomepageUser,
@@ -99,12 +96,6 @@ const WebSocketProvider = ({ children }) => {
         } else {
           dispatch(
             setUsername(resultBody.newName, resultBody.timeNextChangeAllowed)
-          );
-          dispatch(
-            updateUsernameInMessages(
-              resultBody.previousName,
-              resultBody.newName
-            )
           );
         }
         updateUsernameSub.unsubscribe();
@@ -205,28 +196,12 @@ const WebSocketProvider = ({ children }) => {
         "/topic/chatroom/" + chatroomName + "/users",
         (message) => {
           const messageBody = JSON.parse(message.body);
-          switch (messageBody.event) {
-            case "JOIN":
-              dispatch(newUserJoin(messageBody.currentName));
-              break;
-            case "LEAVE":
-              dispatch(userLeave(messageBody.currentName));
-              break;
-            case "CHANGE_USERNAME":
-              dispatch(
-                usernameChange(
-                  messageBody.previousName,
-                  messageBody.currentName
-                )
-              );
-              dispatch(
-                updateUsernameInMessages(
-                  messageBody.previousName,
-                  messageBody.currentName
-                )
-              );
-              break;
-          }
+          dispatch(setChatroomUsers(messageBody.users));
+
+          Object.keys(messageBody.modifiedUsernames).forEach((previousName) => {
+            const newName = messageBody.modifiedUsernames[previousName];
+            dispatch(updateUsernameInMessages(previousName, newName));
+          });
         }
       );
 
@@ -254,7 +229,8 @@ const WebSocketProvider = ({ children }) => {
 
   if (!stompClient) {
     const host = "http://localhost:8080/websocket";
-    // "http://ec2-3-21-166-131.us-east-2.compute.amazonaws.com:8080/websocket"; // "http://localhost:8080/websocket"
+    // TODO - Pass in host name dynamically for prod and dev
+    // "https://api.jibbrjabbr.com/websocket";
     const sock = new SockJS(host);
     stompClient = Stomp.over(sock);
     stompClient.reconnect_delay = 5000; // enable automatic reconnecting after 5 sec

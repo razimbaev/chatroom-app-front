@@ -4,9 +4,6 @@ import {
   SET_CHATROOM,
   SET_CHATROOM_USERS,
   SET_HOMEPAGE_DATA,
-  NEW_USER_JOIN,
-  USER_LEAVE,
-  USERNAME_CHANGE,
   SET_USERNAME,
   UPDATE_USERNAME_IN_MESSAGES,
   UPDATE_HOMEPAGE_USER,
@@ -54,18 +51,6 @@ export const updateHomepageChatrooms = (
     numUsers,
     mostRecentMessages,
   };
-};
-
-export const newUserJoin = (username: string) => {
-  return { type: NEW_USER_JOIN, username };
-};
-
-export const userLeave = (username: string) => {
-  return { type: USER_LEAVE, username };
-};
-
-export const usernameChange = (previousName: string, newName: string) => {
-  return { type: USERNAME_CHANGE, previousName, newName };
 };
 
 export const setUsername = (

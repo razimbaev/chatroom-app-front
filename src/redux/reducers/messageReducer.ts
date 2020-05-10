@@ -4,9 +4,6 @@ import {
   SET_CHATROOM,
   SET_CHATROOM_USERS,
   SET_HOMEPAGE_DATA,
-  NEW_USER_JOIN,
-  USER_LEAVE,
-  USERNAME_CHANGE,
   SET_USERNAME,
   UPDATE_USERNAME_IN_MESSAGES,
   UPDATE_HOMEPAGE_MESSAGE,
@@ -114,36 +111,6 @@ export const messageReducer = (
           },
         },
       };
-    case NEW_USER_JOIN:
-      return {
-        ...state,
-        users: [...state.users, { oldName: "", currentName: action.username }],
-      };
-    case USER_LEAVE:
-      return {
-        ...state,
-        users: state.users.filter(
-          (user) => user.currentName !== action.username
-        ),
-      };
-    case USERNAME_CHANGE: {
-      const newUserList = [
-        { oldName: action.previousName, currentName: action.newName },
-      ];
-      let foundFirst = false;
-      const remainingUsers = state.users.filter((user) => {
-        if (foundFirst) return true;
-        if (user.currentName !== action.previousName) return true;
-        foundFirst = true;
-        return false;
-      });
-
-      newUserList.push(...remainingUsers);
-      return {
-        ...state,
-        users: newUserList,
-      };
-    }
     case SET_USERNAME:
       return {
         ...state,

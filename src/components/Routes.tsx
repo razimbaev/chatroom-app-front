@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Home from "./Home";
 import Chatroom from "./Chatroom";
 import Header from "./Header";
 import MyChats from "./MyChats";
-import { Redirect } from "react-router-dom";
 
 const Routes = () => {
   const [redirect, setRedirect] = useState("");

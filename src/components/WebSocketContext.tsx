@@ -198,10 +198,14 @@ const WebSocketProvider = ({ children }) => {
           const messageBody = JSON.parse(message.body);
           dispatch(setChatroomUsers(messageBody.users));
 
-          Object.keys(messageBody.modifiedUsernames).forEach((previousName) => {
-            const newName = messageBody.modifiedUsernames[previousName];
-            dispatch(updateUsernameInMessages(previousName, newName));
-          });
+          if (messageBody.modifiedUsernames) {
+            Object.keys(messageBody.modifiedUsernames).forEach(
+              (previousName) => {
+                const newName = messageBody.modifiedUsernames[previousName];
+                dispatch(updateUsernameInMessages(previousName, newName));
+              }
+            );
+          }
         }
       );
 

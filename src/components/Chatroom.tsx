@@ -34,7 +34,7 @@ const Chatroom = (props) => {
   };
 
   return (
-    <div className="chatroom">
+    <div className="page chatroom">
       <h1 className="chatroom-title">{chatroomName}</h1>
       <Row>
         <Col xs={2}>

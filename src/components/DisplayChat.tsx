@@ -62,8 +62,11 @@ const DisplayChat = () => {
     // TODO - should either use better key than index or make sure that indexes remain the same as update come from server
     <Row key={index} className="message-margins">
       <Badge
-        className="chat-message"
-        variant={message.isMine ? "primary" : "secondary"}
+        className={
+          message.isMine
+            ? "chat-message message-mine"
+            : "chat-message message-other"
+        }
       >
         {message.display}
       </Badge>

@@ -142,7 +142,7 @@ const Home = () => {
   );
 
   return (
-    <div>
+    <div className="page">
       {createNewChatroomButton}
       {rows}
       <CreateNewChatroomModal show={showModal} handleClose={closeModal} />

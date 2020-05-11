@@ -30,17 +30,20 @@ const SendMessage = ({ chatroomName, handleOpenModal }) => {
     <Form onSubmit={handleSubmit}>
       <InputGroup className="mb-3">
         <InputGroup.Prepend>
-          <InputGroup.Text>{userId || "<-Set Username"}</InputGroup.Text>
+          <InputGroup.Text className="chatroom-message-prepend">
+            {userId || "<-Set Username"}
+          </InputGroup.Text>
         </InputGroup.Prepend>
         <FormControl
           placeholder="Your Message"
           aria-label="Your Message"
           aria-describedby="basic-addon2"
           onChange={handleMessageChange}
+          className="chatroom-message-input"
           value={message}
         />
         <InputGroup.Append>
-          <Button type="submit" variant="outline-primary">
+          <Button type="submit" className="chatroom-message-submit">
             Send
           </Button>
         </InputGroup.Append>

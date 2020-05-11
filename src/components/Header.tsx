@@ -37,12 +37,12 @@ const Header = ({ setRedirect }) => {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" className="header-bar">
+    <Navbar className="header-bar">
       <Navbar.Brand as={Link} to="/">
-        MyChatRoom
+        JibbrJabbr
       </Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link as={Link} to="/">
+        <Nav.Link as={Link} to="/" className="navbar-text">
           Explore
         </Nav.Link>
         <Form inline onSubmit={handleSubmit}>
@@ -64,7 +64,7 @@ const Header = ({ setRedirect }) => {
         </Form>
       </Nav>
       <Nav className="ml-auto">
-        <Nav.Link as={Link} to="/mychats">
+        <Nav.Link as={Link} to="/mychats" className="navbar-text">
           My Chats
         </Nav.Link>
       </Nav>

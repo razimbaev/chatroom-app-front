@@ -23,7 +23,7 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
     if (user.currentName && user.currentName !== username) {
       return (
         <div key={user.currentName} className="text-align-center">
-          <Badge variant="success" className="chatroom-user-status-box">
+          <Badge className="chatroom-user-status-box message-other">
             {user.currentName}
           </Badge>
           <br />
@@ -88,7 +88,7 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
       <div className="chatroom-user-window">
         <div>
           <div key={username} className="text-align-center">
-            <Badge variant="primary" className="chatroom-user-status-box">
+            <Badge className="chatroom-user-status-box message-mine">
               {username || "<nameless>"} (you)
             </Badge>
             <br />

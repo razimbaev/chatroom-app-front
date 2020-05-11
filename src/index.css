@@ -241,3 +241,13 @@ html {
   flex-direction: row-reverse;
   display: flex;
 }
+
+.modal-content {
+  background-color: var(--button-color) !important;
+  border-color: var(--text-color) !important;
+  border-width: medium !important;
+}
+
+.modal-text {
+  color: var(--text-color);
+}

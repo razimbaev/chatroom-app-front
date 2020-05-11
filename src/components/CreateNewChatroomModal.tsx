@@ -63,37 +63,39 @@ const CreateNewChatroomModal = (props) => {
 
   return (
     <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Body>
-        <Form onSubmit={handleSubmit}>
-          <Form.Group controlId="formChatroomName">
-            <Form.Control
-              type="text"
-              placeholder="Enter new chatroom name here"
-              value={newChatroomName}
-              onChange={handleChange}
-              className={className}
-              ref={newChatroomField}
-            />
-            <Form.Text className="text-muted">
-              Chatroom Names must be unique and must be between 3 and 30
-              characters and must only contain [a-z][A-Z][0-9]-_
-            </Form.Text>
-          </Form.Group>
+      <div className="modal-style">
+        <Modal.Body>
+          <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formChatroomName">
+              <Form.Control
+                type="text"
+                placeholder="Enter new chatroom name here"
+                value={newChatroomName}
+                onChange={handleChange}
+                className={className}
+                ref={newChatroomField}
+              />
+              <Form.Text className="modal-text">
+                Chatroom Names must be unique and must be between 3 and 30
+                characters and must only contain [a-z][A-Z][0-9]-_
+              </Form.Text>
+            </Form.Group>
 
-          <div className="text-align-center">
-            <span className="error-message">{errorMessage}</span>
-          </div>
-          <br />
-          <Button
-            variant="outline-light"
-            className="create-chatroom"
-            type="submit"
-            disabled={!validated}
-          >
-            Submit
-          </Button>
-        </Form>
-      </Modal.Body>
+            <div className="text-align-center">
+              <span className="error-message">{errorMessage}</span>
+            </div>
+            <br />
+            <Button
+              variant="outline-light"
+              className="create-chatroom"
+              type="submit"
+              disabled={!validated}
+            >
+              Submit
+            </Button>
+          </Form>
+        </Modal.Body>
+      </div>
     </Modal>
   );
 };

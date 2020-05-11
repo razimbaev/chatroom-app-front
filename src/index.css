@@ -19,6 +19,7 @@ html {
 
 .page {
   background-color: var(--background-color);
+  font-family: "Kanit", sans-serif;
 }
 
 .header-bar {

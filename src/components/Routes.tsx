@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import Home from "./Home";
+import Explore from "./Explore";
 import Chatroom from "./Chatroom";
 import Header from "./Header";
 import MyChats from "./MyChats";
@@ -23,6 +24,7 @@ const Routes = () => {
       </div>
       <Switch>
         <Route exact path="/" component={Home} />
+        <Route exact path="/explore" component={Explore} />
         <Route exact path="/chatroom/:chatroomName" component={Chatroom} />
         <Route exact path="/mychats" component={MyChats} />
       </Switch>

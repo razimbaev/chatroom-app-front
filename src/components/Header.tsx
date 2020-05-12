@@ -42,7 +42,7 @@ const Header = ({ setRedirect }) => {
         JibbrJabbr
       </Navbar.Brand>
       <Nav className="mr-auto">
-        <Nav.Link as={Link} to="/" className="navbar-text">
+        <Nav.Link as={Link} to="/explore" className="navbar-text">
           Explore
         </Nav.Link>
         <Form inline onSubmit={handleSubmit}>

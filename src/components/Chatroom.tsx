@@ -35,7 +35,9 @@ const Chatroom = (props) => {
 
   return (
     <div className="page chatroom">
-      <h1 className="chatroom-title">{chatroomName}</h1>
+      <h1 className="chatroom-title dynamic-chatroom-title-font">
+        {chatroomName}
+      </h1>
       <Row className="chatroom-body">
         <Col xs={2}>
           <DisplayChatUsers handleOpenModal={handleOpenModal} />

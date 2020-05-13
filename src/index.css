@@ -29,10 +29,12 @@
   /* chatroom specific */
   --chatroom-title: 4vh;
   --chatroom-title-margin-bottom: 10px;
-  --chatroom-body: calc(var(--page-height) - var(--chatroom-title) - var(--chatroom-title-margin-bottom));
+  --chatroom-body: calc(
+    var(--page-height) - var(--chatroom-title) -
+      var(--chatroom-title-margin-bottom)
+  );
 }
-ƒ
-body {
+ƒ body {
   overflow: hidden; /* Hide scrollbars */
 }
 
@@ -90,7 +92,7 @@ html {
 }
 
 .home-page-welcome-body {
-  display: flex; 
+  display: flex;
   flex-direction: column;
   margin: auto;
   margin-left: 50px;
@@ -104,15 +106,15 @@ html {
   font-weight: var(--default-brand-font-weight);
   color: var(--text-color);
   overflow: hidden; /* Ensures the content is not revealed until the animation */
-  border-right: .15em solid var(--text-color); /* The typwriter cursor */
-  white-space: nowrap; 
+  border-right: 0.15em solid var(--text-color); /* The typwriter cursor */
+  white-space: nowrap;
   letter-spacing: 0.1em;
-  animation:
-    typing 3.5s steps(40, end) 1s 1 normal both,
-    blink-caret .75s step-end infinite;
+  animation: typing 3.5s steps(40, end) 1s 1 normal both,
+    blink-caret 0.75s step-end infinite;
 }
 
-.home-page-main-text, .home-page-sec-text {
+.home-page-main-text,
+.home-page-sec-text {
   font-family: var(--default-font);
   color: var(--text-color);
 }
@@ -128,6 +130,10 @@ html {
 .home-page-sec-text-container .home-page-sec-text {
   font-size: 20px;
   font-weight: 100;
+}
+
+.home-page-button-container {
+  text-align: center;
 }
 
 .page {
@@ -399,7 +405,10 @@ html {
   color: var(--text-color);
 }
 
-.search-bar, .modal-text, .error-message, .invalid-textbox {
+.search-bar,
+.modal-text,
+.error-message,
+.invalid-textbox {
   font-family: var(--default-font);
 }
 
@@ -464,12 +473,21 @@ html {
 
 /* The typing effect */
 @keyframes typing {
-  from { max-width: 0 }
-  to { max-width: 100% }
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: 100%;
+  }
 }
 
 /* The typewriter cursor effect */
 @keyframes blink-caret {
-  from, to { border-color: transparent }
-  50% { border-color: var(--text-color); }
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--text-color);
+  }
 }

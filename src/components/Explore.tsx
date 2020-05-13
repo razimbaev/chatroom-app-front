@@ -67,18 +67,22 @@ const Explore = () => {
   const rows = left.map((leftCard, index) => {
     return (
       <Row key={index}>
-        <Col xs={6}>
+        <Col xs={12} md={6}>
           <Row>
-            <Col xs={3}></Col>
-            <Col xs={8}>{leftCard}</Col>
-            <Col xs={1} />
+            <Col xs={1} md={3}></Col>
+            <Col xs={10} md={8}>
+              {leftCard}
+            </Col>
+            <Col xs={1} md={1} />
           </Row>
         </Col>
-        <Col xs={6}>
+        <Col xs={12} md={6}>
           <Row>
-            <Col xs={1} />
-            <Col xs={8}>{index < right.length ? right[index] : null}</Col>
-            <Col xs={3} />
+            <Col xs={1} md={1} />
+            <Col xs={10} md={8}>
+              {index < right.length ? right[index] : null}
+            </Col>
+            <Col xs={1} md={3} />
           </Row>
         </Col>
       </Row>

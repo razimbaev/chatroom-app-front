@@ -32,7 +32,7 @@ module.exports = {
   plugins: [
     new htmlWebpackPlugin({
       template: "./src/index.html",
-      //   favicon: "../src/favicon.ico"  // TODO - get a favicon and uncomment this line
+      favicon: "./favicon.ico",
     }),
   ],
   module: {

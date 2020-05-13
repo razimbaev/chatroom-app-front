@@ -36,7 +36,7 @@ const Chatroom = (props) => {
   return (
     <div className="page chatroom">
       <h1 className="chatroom-title">{chatroomName}</h1>
-      <Row>
+      <Row className="chatroom-body">
         <Col xs={2}>
           <DisplayChatUsers handleOpenModal={handleOpenModal} />
         </Col>

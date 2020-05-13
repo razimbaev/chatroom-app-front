@@ -87,7 +87,7 @@ const DisplayChat = () => {
           onClick={handleClickMostRecentMessageNotification}
         >
           <Row className="message-margins">
-            <Badge className="chat-message" variant="secondary">
+            <Badge className="chat-message message-other">
               {messages[messages.length - 1].display}
             </Badge>
           </Row>

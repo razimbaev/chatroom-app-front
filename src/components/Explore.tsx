@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card";
 import CreateNewChatroomModal from "./CreateNewChatroomModal";
 import Button from "react-bootstrap/Button";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faRandom } from "@fortawesome/free-solid-svg-icons";
 
 const Explore = () => {
   const [redirect, setRedirect] = useState("");
@@ -117,7 +119,7 @@ const Explore = () => {
               className="create-chatroom"
               onClick={joinRandomChatroom}
             >
-              Join Random
+              <FontAwesomeIcon icon={faRandom} /> Join Random
             </Button>
           </Col>
           <Col xs={1} />
@@ -132,7 +134,7 @@ const Explore = () => {
               className="create-chatroom"
               onClick={openModal}
             >
-              + Create New Chatroom
+              <FontAwesomeIcon icon={faPlus} /> Create New Chatroom
             </Button>
           </Col>
           <Col xs={3} />

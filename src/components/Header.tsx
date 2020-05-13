@@ -5,6 +5,8 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { Link } from "react-router-dom";
 import { WebSocketContext } from "./WebSocketContext";
+import { faEarlybirds } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = ({ setRedirect }) => {
   const [suggestions, setSuggestions] = useState([]);
@@ -39,7 +41,7 @@ const Header = ({ setRedirect }) => {
   return (
     <Navbar className="header-bar">
       <Navbar.Brand as={Link} to="/">
-        JibbrJabbr
+        <FontAwesomeIcon icon={faEarlybirds}/> JibbrJabbr
       </Navbar.Brand>
       <Nav className="mr-auto">
         <Nav.Link as={Link} to="/explore" className="navbar-text">
@@ -49,7 +51,7 @@ const Header = ({ setRedirect }) => {
           <FormControl
             type="text"
             placeholder="Search for Chatroom"
-            className="mr-sm-2"
+            className="mr-sm-2 search-bar"
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}

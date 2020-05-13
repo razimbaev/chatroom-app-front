@@ -5,6 +5,8 @@ import FormControl from "react-bootstrap/FormControl";
 import InputGroup from "react-bootstrap/InputGroup";
 import { WebSocketContext } from "./WebSocketContext";
 import { useSelector } from "react-redux";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAngleDoubleLeft } from "@fortawesome/free-solid-svg-icons";
 
 const SendMessage = ({ chatroomName, handleOpenModal }) => {
   const userId = useSelector((state) => state.username);
@@ -31,7 +33,12 @@ const SendMessage = ({ chatroomName, handleOpenModal }) => {
       <InputGroup className="mb-3">
         <InputGroup.Prepend>
           <InputGroup.Text className="chatroom-message-prepend">
-            {userId || "<-Set Username"}
+            {userId || (
+              <div>
+                <FontAwesomeIcon className="set-username-prompt-arrow" icon={faAngleDoubleLeft} size="lg" />  Set
+                Username There
+              </div>
+            )}
           </InputGroup.Text>
         </InputGroup.Prepend>
         <FormControl

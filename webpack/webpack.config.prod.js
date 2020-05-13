@@ -30,7 +30,7 @@ module.exports = {
     }),
     new htmlWebpackPlugin({
       template: "./src/index.html",
-      //   favicon: "../src/favicon.ico"  // TODO - get a favicon and uncomment this line
+      favicon: "./favicon.ico",
       minify: {
         // see https://github.com/kangax/html-minifier#options-quick-reference
         removeComments: true,

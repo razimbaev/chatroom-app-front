@@ -24,8 +24,6 @@
   --header-height: 8vh;
   --page-height: calc(100vh - var(--header-height));
 
-  font-family: var(--default-font) !important;
-
   /* chatroom specific */
   --chatroom-title: 4vh;
   --chatroom-title-margin-bottom: 10px;

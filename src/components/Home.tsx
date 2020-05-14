@@ -42,8 +42,7 @@ const Home = () => {
           <div className="home-page-sec-text-container home-page-button-container">
             <Button
               variant="outline-light"
-              className="create-chatroom"
-              style={{ display: "inline-block" }}
+              className="create-chatroom home-page-sec-text"
               as={Link}
               to="/explore"
             >

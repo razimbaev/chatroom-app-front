@@ -18,14 +18,9 @@ const Explore = () => {
   }, []);
 
   const websocket = React.useContext(WebSocketContext);
-  let unsubscribe;
 
   useEffect(() => {
-    unsubscribe = websocket.loadHomepageData();
-
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
+    websocket.loadExplorePage();
   }, []);
 
   const homepageData = useSelector((state) => state.homepageData);

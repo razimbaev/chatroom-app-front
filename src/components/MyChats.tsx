@@ -8,16 +8,10 @@ import Col from "react-bootstrap/Col";
 
 const MyChats = () => {
   const websocket = React.useContext(WebSocketContext);
-  let unsubscribe;
 
   useEffect(() => {
-    // TODO - not scalable as more homepage data is created so think about creating separate websocket endpoint to handle this kind of data
-    unsubscribe = websocket.loadHomepageData();
-    websocket.getMyChats();
-
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
+    // TODO - not scalable as more homepage data is created so think about pagination
+    websocket.loadMyChatsPage();
   }, []);
 
   const homepageData = useSelector((state) => state.homepageData);

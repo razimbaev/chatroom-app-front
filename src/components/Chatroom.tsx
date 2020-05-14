@@ -5,23 +5,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import DisplayChatUsers from "./DisplayChatUsers";
 import { WebSocketContext } from "./WebSocketContext";
-import { useDispatch } from "react-redux";
-import { setChatroom } from "../redux/actions/messageActions";
 import ChangeUsernameModal from "./ChangeUsernameModal";
 
 const Chatroom = (props) => {
   const chatroomName = props.match.params.chatroomName;
-  const dipatch = useDispatch();
   const websocket = React.useContext(WebSocketContext);
-  let unsubscribe;
 
   useEffect(() => {
-    dipatch(setChatroom(chatroomName));
-    unsubscribe = websocket.subscribeChatroom(chatroomName);
-
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
+    websocket.loadChatroomPage(chatroomName);
   }, [chatroomName]);
 
   const [showModal, setShowModal] = useState(false);

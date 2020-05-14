@@ -1,6 +1,6 @@
 import React, { createContext } from "react";
 import SockJS from "sockjs-client";
-import Stomp from "stompjs";
+import { Client } from "@stomp/stompjs";
 import { useDispatch } from "react-redux";
 import {
   updateChat,
@@ -13,6 +13,7 @@ import {
   updateHomepageMessage,
   updateHomepageChatrooms,
   setMyChatrooms,
+  setChatroom,
 } from "../redux/actions/messageActions";
 
 const WebSocketContext = createContext(null);
@@ -21,11 +22,12 @@ export { WebSocketContext };
 
 const WebSocketProvider = ({ children }) => {
   // TODO - maybe refactor this to set whether user is in home or chatroom and then useEffect can handle all those changes
-  let stompClient;
+  let stompClient: Client;
   let ws;
-  let toSubscribeList = [];
-  let toUnsubscribeList = [];
-  let homepageSub = [];
+
+  let currentSubscriptions = [];
+  let subscriptionQueue = [];
+  let reconnectQueue = [];
 
   const dispatch = useDispatch();
 
@@ -46,7 +48,7 @@ const WebSocketProvider = ({ children }) => {
 
   const getChatroomSuggestions = (onSuccess) => {
     if (!stompClient || !stompClient.connected) {
-      toSubscribeList.push(() => {
+      subscriptionQueue.push(() => {
         getChatroomSuggestions(onSuccess);
       });
     } else {
@@ -61,31 +63,14 @@ const WebSocketProvider = ({ children }) => {
     }
   };
 
-  const getMyChats = () => {
-    if (!stompClient || !stompClient.connected) {
-      toSubscribeList.push(() => {
-        getMyChats();
-      });
-    } else {
-      const getMyChatsSub = stompClient.subscribe(
-        "/app/mychatrooms",
-        (result) => {
-          const resultBody = JSON.parse(result.body);
-          dispatch(setMyChatrooms(resultBody));
-          getMyChatsSub.unsubscribe();
-        }
-      );
-    }
-  };
-
   const sendMessage = (chatroomName, content, userId) => {
-    stompClient.send(
-      "/app/sendMessage/" + chatroomName,
-      {},
-      JSON.stringify({ content, userId })
-    );
+    stompClient.publish({
+      destination: "/app/sendMessage/" + chatroomName,
+      body: JSON.stringify({ content, userId }),
+    });
   };
 
+  // TODO - improve by just publishing to endpoint and have endpoint return back to new generic endpoint user subscribes to in order to receive one off messages
   const updateUsername = (username, onError) => {
     const updateUsernameSub = stompClient.subscribe(
       "/app/setUsername/" + username,
@@ -103,14 +88,15 @@ const WebSocketProvider = ({ children }) => {
     );
   };
 
-  const loadHomepageData = () => {
-    if (!stompClient || !stompClient.connected) {
-      toSubscribeList.push(() => {
-        loadHomepageData();
-      });
-    } else {
-      unsubscribeHome();
+  const loadExplorePage = (fromMyChat?: boolean): void => {
+    if (fromMyChat) {
+      unsubscribeAll();
+    }
 
+    if (!stompClient || !stompClient.connected) {
+      subscriptionQueue.push(loadExplorePage);
+    } else {
+      reconnectQueue = [loadExplorePage];
       const getAllChatroomsSub = stompClient.subscribe(
         "/app/home/init",
         (result) => {
@@ -152,29 +138,40 @@ const WebSocketProvider = ({ children }) => {
         }
       );
 
-      homepageSub = [
-        updateHomeMessageSub,
-        updateHomeUserSub,
-        updateHomeChatroomsSub,
-      ];
+      currentSubscriptions.push(updateHomeMessageSub);
+      currentSubscriptions.push(updateHomeUserSub);
+      currentSubscriptions.push(updateHomeChatroomsSub);
     }
-
-    return unsubscribeHome;
   };
 
-  const unsubscribeHome = () => {
-    homepageSub.forEach((sub) => {
-      sub.unsubscribe();
-    });
-    homepageSub = [];
-  };
+  const loadMyChatsPage = (): void => {
+    unsubscribeAll();
 
-  const subscribeChatroom = (chatroomName) => {
     if (!stompClient || !stompClient.connected) {
-      toSubscribeList.push(() => {
-        subscribeChatroom(chatroomName);
-      });
+      subscriptionQueue.push(loadMyChatsPage);
     } else {
+      reconnectQueue = [loadMyChatsPage];
+      const getMyChatsSub = stompClient.subscribe(
+        "/app/mychatrooms",
+        (result) => {
+          const resultBody = JSON.parse(result.body);
+          dispatch(setMyChatrooms(resultBody));
+          getMyChatsSub.unsubscribe();
+        }
+      );
+
+      loadExplorePage(true);
+    }
+  };
+
+  const loadChatroomPage = (chatroomName): void => {
+    unsubscribeAll();
+
+    dispatch(setChatroom(chatroomName));
+    if (!stompClient || !stompClient.connected) {
+      subscriptionQueue.push(() => loadChatroomPage(chatroomName));
+    } else {
+      reconnectQueue = [() => loadChatroomPage(chatroomName)];
       // TODO - make sure order of messages displayed is correct
       const init = stompClient.subscribe(
         "/app/chatroom/" + chatroomName + "/init",
@@ -217,52 +214,55 @@ const WebSocketProvider = ({ children }) => {
         }
       );
 
-      unsubscribeExistingChatroom();
-      toUnsubscribeList = [messageSub, userSub];
+      currentSubscriptions.push(messageSub);
+      currentSubscriptions.push(userSub);
     }
-
-    return unsubscribeExistingChatroom;
   };
 
-  const unsubscribeExistingChatroom = () => {
-    toUnsubscribeList.forEach((sub) => {
+  const unsubscribeAll = (keepSubQueue?: boolean): void => {
+    currentSubscriptions.forEach((sub) => {
       sub.unsubscribe();
     });
-    toUnsubscribeList = [];
+    currentSubscriptions = [];
+    if (!keepSubQueue) subscriptionQueue = [];
   };
 
   if (!stompClient) {
     const host = "http://localhost:8080/websocket";
     // TODO - Pass in host name dynamically for prod and dev
     // "https://api.jibbrjabbr.com/websocket";
-    const sock = new SockJS(host);
-    stompClient = Stomp.over(sock);
-    stompClient.reconnect_delay = 5000; // enable automatic reconnecting after 5 sec
-    // can configure heartbeat with stompClient.heartbeat.outgoing && stompClient.heartbeat.incoming
-    stompClient.connect({}, () => {
-      toSubscribeList.forEach((toSub) => {
-        toSub();
-      });
-      toSubscribeList = [];
+
+    stompClient = new Client({
+      reconnectDelay: 5000,
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      webSocketFactory: () => new SockJS(host),
     });
 
+    stompClient.onDisconnect = () => {
+      alert("Disconnect");
+    };
+
+    stompClient.onConnect = () => {
+      unsubscribeAll(true);
+
+      reconnectQueue.forEach((subscribe) => subscribe());
+
+      subscriptionQueue.forEach((subscribe) => subscribe());
+      subscriptionQueue = [];
+    };
+    stompClient.activate();
+
     ws = {
-      socket: stompClient,
       sendMessage,
       updateUsername,
-      subscribeChatroom,
-      loadHomepageData,
       createNewChatroom,
-      getMyChats,
       getChatroomSuggestions,
+      loadExplorePage,
+      loadChatroomPage,
+      loadMyChatsPage,
     };
   }
-
-  React.useEffect(() => {
-    return () => {
-      if (stompClient !== null) stompClient.disconnect();
-    };
-  }, [stompClient]);
 
   return (
     <WebSocketContext.Provider value={ws}>{children}</WebSocketContext.Provider>

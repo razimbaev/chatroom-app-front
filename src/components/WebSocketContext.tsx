@@ -239,10 +239,6 @@ const WebSocketProvider = ({ children }) => {
       webSocketFactory: () => new SockJS(host),
     });
 
-    stompClient.onDisconnect = () => {
-      alert("Disconnect");
-    };
-
     stompClient.onConnect = () => {
       unsubscribeAll(true);
 

@@ -28,6 +28,7 @@ const WebSocketProvider = ({ children }) => {
   let currentSubscriptions = [];
   let subscriptionQueue = [];
   let reconnectQueue = [];
+  let startingReconnectDelayTime = 500;
 
   const dispatch = useDispatch();
 
@@ -228,12 +229,13 @@ const WebSocketProvider = ({ children }) => {
   };
 
   if (!stompClient) {
-    const host = "http://localhost:8080/websocket";
-    // TODO - Pass in host name dynamically for prod and dev
-    // "https://api.jibbrjabbr.com/websocket";
+    const host =
+      process.env.NODE_ENV === "production"
+        ? "https://api.jibbrjabbr.com/websocket"
+        : "http://localhost:8080/websocket";
 
     stompClient = new Client({
-      reconnectDelay: 5000,
+      reconnectDelay: startingReconnectDelayTime,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       webSocketFactory: () => new SockJS(host),
@@ -246,7 +248,14 @@ const WebSocketProvider = ({ children }) => {
 
       subscriptionQueue.forEach((subscribe) => subscribe());
       subscriptionQueue = [];
+
+      stompClient.reconnectDelay = startingReconnectDelayTime;
     };
+
+    stompClient.onWebSocketClose = () => {
+      stompClient.reconnectDelay = stompClient.reconnectDelay * 2;
+    };
+
     stompClient.activate();
 
     ws = {

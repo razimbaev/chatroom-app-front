@@ -129,7 +129,7 @@ html {
 
 /* to accommodate 13-inch */
 
-@media screen and (max-height: 524px) {
+@media screen and (max-height: 611px) {
   .home-page-sec-text {
     font-size: var(--font-size-sec-text-13-inch);
   }

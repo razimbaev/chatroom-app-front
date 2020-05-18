@@ -403,6 +403,10 @@ html {
   color: var(--text-color);
 }
 
+.modal-input {
+  font-family: var(--default-font);
+}
+
 .search-bar,
 .modal-text,
 .error-message,

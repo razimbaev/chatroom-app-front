@@ -49,7 +49,7 @@ const ChangeUsernameModal = (props) => {
     props.handleClose();
   }, [currentUsername]);
 
-  const className = validated ? "" : "invalid-textbox";
+  const className = validated ? "modal-input" : "modal-input invalid-textbox";
 
   const setUsernameBeforeSendMessageWarning = (
     <div className="text-align-center">

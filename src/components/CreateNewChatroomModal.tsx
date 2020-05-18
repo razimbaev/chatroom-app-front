@@ -55,7 +55,7 @@ const CreateNewChatroomModal = (props) => {
     );
   };
 
-  const className = validated ? "" : "invalid-textbox";
+  const className = validated ? "modal-input" : "modal-input invalid-textbox";
 
   if (redirect) {
     return <Redirect to={redirect} />;

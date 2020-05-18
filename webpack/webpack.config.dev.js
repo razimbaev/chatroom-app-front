@@ -30,6 +30,9 @@ module.exports = {
     // https: false
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
+    }),
     new htmlWebpackPlugin({
       template: "./src/index.html",
       favicon: "./favicon.ico",

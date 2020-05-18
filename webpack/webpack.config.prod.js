@@ -9,7 +9,6 @@ process.env.NODE_ENV = "production";
 module.exports = {
   mode: "production",
   target: "web",
-  devtool: "source-map",
   entry: "./src/index",
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"],
@@ -59,15 +58,11 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           {
             loader: "css-loader",
-            options: {
-              sourceMap: true,
-            },
           },
           {
             loader: "postcss-loader",
             options: {
               plugins: () => [require("cssnano")],
-              sourceMap: true,
             },
           },
         ],

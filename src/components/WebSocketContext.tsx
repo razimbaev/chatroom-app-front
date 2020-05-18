@@ -90,7 +90,7 @@ const WebSocketProvider = ({ children }) => {
   };
 
   const loadExplorePage = (fromMyChat?: boolean): void => {
-    if (fromMyChat) {
+    if (!fromMyChat) {
       unsubscribeAll();
     }
 

@@ -84,7 +84,7 @@ const DisplayChatUsers = ({ handleOpenModal }) => {
   );
 
   return (
-    <div>
+    <div className="chatroom-user-panel">
       <div className="chatroom-user-window">
         <div>
           <div key={username} className="text-align-center">

@@ -20,6 +20,10 @@
   --default-font: "Roboto Mono", monospace;
   --default-font-size-badge: 13px;
 
+  /* 13-inch-main-page-text */
+  --font-size-main-text-13-inch: 24px;
+  --font-size-sec-text-13-inch: 16px;
+
   /* header */
   --header-height: 8vh;
   --page-height: calc(100vh - var(--header-height));
@@ -115,19 +119,29 @@ html {
 .home-page-sec-text {
   font-family: var(--default-font);
   color: var(--text-color);
-}
-
-.home-page-main-text {
   font-weight: 400;
 }
 
-.home-page-sec-text-container {
-  width: 35vw;
-}
-
-.home-page-sec-text-container .home-page-sec-text {
+.home-page-sec-text {
   font-size: 20px;
   font-weight: 100;
+}
+
+/* to accommodate 13-inch */
+
+@media screen and (max-height: 524px) {
+  .home-page-sec-text {
+    font-size: var(--font-size-sec-text-13-inch);
+  }
+
+  .home-page-main-text {
+    font-size: var(--font-size-main-text-13-inch);
+  }
+
+  .chatroom-user-window,
+  .chatroom-messages {
+    height: 75vh !important;
+  }
 }
 
 .home-page-button-container {
@@ -208,7 +222,9 @@ html {
   margin-bottom: var(--chatroom-title-margin-bottom);
 }
 
-.chatroom-body {
+.chatroom-body,
+.chatroom-cols,
+.chatroom-user-panel {
   height: var(--chatroom-body);
 }
 

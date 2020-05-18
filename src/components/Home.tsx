@@ -36,19 +36,19 @@ const Home = () => {
               <br />
               not even us.
             </p>
+            <div className="home-page-sec-text-container home-page-button-container">
+              <Button
+                variant="outline-light"
+                className="create-chatroom home-page-sec-text"
+                as={Link}
+                to="/explore"
+              >
+                Explore Chatrooms
+              </Button>
+            </div>
           </div>
           <br />
           <br />
-          <div className="home-page-sec-text-container home-page-button-container">
-            <Button
-              variant="outline-light"
-              className="create-chatroom home-page-sec-text"
-              as={Link}
-              to="/explore"
-            >
-              Explore Chatrooms
-            </Button>
-          </div>
         </div>
       </div>
     </div>

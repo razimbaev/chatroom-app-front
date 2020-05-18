@@ -105,11 +105,9 @@ const DisplayChat = () => {
   };
 
   return (
-    <div className="chatroom-messages" onScroll={handleScroll}>
-      <div ref={chatWindow}>
-        {badgeMessages}
-        {mostRecentMessageNotification}
-      </div>
+    <div className="chatroom-messages" onScroll={handleScroll} ref={chatWindow}>
+      {badgeMessages}
+      {mostRecentMessageNotification}
     </div>
   );
 };

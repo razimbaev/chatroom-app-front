@@ -30,10 +30,10 @@ const Chatroom = (props) => {
         {chatroomName}
       </h1>
       <Row className="chatroom-body">
-        <Col xs={2}>
+        <Col xs={2} className="chatroom-cols">
           <DisplayChatUsers handleOpenModal={handleOpenModal} />
         </Col>
-        <Col xs={10}>
+        <Col xs={10} className="chatroom-cols">
           <DisplayChat />
           <SendMessage
             chatroomName={chatroomName}

@@ -76,8 +76,7 @@ const ChangeUsernameModal = (props) => {
             />
             <Form.Text className="modal-text">
               Usernames must be unique and must be between 3 and 20 characters
-              and must only contain [a-z][A-Z][0-9]-_ (Usernames can only be
-              changed once every 24 hours)
+              and must only contain [a-z][A-Z][0-9]-_
             </Form.Text>
           </Form.Group>
 
